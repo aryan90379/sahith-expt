@@ -104,7 +104,7 @@ export default function AdminDashboard() {
   // --- CSV EXPORT FUNCTION ---
   const handleExportCSV = () => {
     if (data.length === 0) return;
-    const headers = ['Participant ID', 'Timestamp', 'Color Name', 'HEX', 'Stare (s)', 'Persistence (s)', 'Perceived Color', 'AI Insight'];
+    const headers = ['Participant ID', 'Timestamp', 'Color Name', 'HEX', 'Stare (s)', 'Persistence (s)', 'Perceived Color'];
     const rows = data.map(r => [
       r.participantId, 
       r.timestamp, 
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
       r.stareDuration, 
       r.persistenceDuration, 
       r.perceivedColor || 'N/A', 
-      `"${(r.aiInsight || '').replace(/"/g, '""')}"`
+     
     ]);
     
     const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
@@ -354,7 +354,6 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 font-medium text-center">Stare (s)</th>
                   <th className="px-6 py-4 font-medium text-center">Persist (s)</th>
                   <th className="px-6 py-4 font-medium">Perceived Color</th>
-                  <th className="px-6 py-4 font-medium">AI Diagnostic</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 font-mono text-xs">
@@ -378,9 +377,7 @@ export default function AdminDashboard() {
                         <span className="text-white/20 italic text-[10px]">None</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 font-sans text-[11px] text-white/50 max-w-xs truncate group-hover:text-white/80 transition-colors cursor-help" title={row.aiInsight}>
-                      {row.aiInsight}
-                    </td>
+                   
                   </tr>
                 ))}
               </tbody>
