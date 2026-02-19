@@ -313,7 +313,13 @@ export default function Home() {
           </div>
 
         ) : phase === ExperimentPhase.ADMIN_DASHBOARD ? (
-          <AdminDashboard onClose={() => setPhase(ExperimentPhase.IDLE)} />
+          <AdminDashboard 
+            onClose={() => setPhase(ExperimentPhase.IDLE)} 
+            onRefresh={() => {
+              const saved = localStorage.getItem('chroma_results');
+              if (saved) setResults(JSON.parse(saved));
+            }} 
+          />
         ) : null}
       </main>
 
