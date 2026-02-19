@@ -76,19 +76,22 @@ export default function Home() {
       colorHex: selectedStimulus.hex,
       stareDuration: stareDuration,
       persistenceDuration: parseFloat(tempPersistenceDuration.toFixed(2)),
-      perceivedColor: perceivedColorInput, // Attach their answer
+      perceivedColor: perceivedColorInput, 
     };
 
     setCurrentResult(newResult);
     setPhase(ExperimentPhase.RESULTS);
     setIsAiLoading(true);
     
-    const [insight] = await Promise.all([
-      generateInsight(newResult),
-      DataService.syncToCloud(newResult)
-    ]);
+    // 1. Wait for Gemini to generate the insight FIRST
+    const insight = await generateInsight(newResult);
     
+    // 2. Attach the insight to the result
     const finalResult = { ...newResult, aiInsight: insight, isSynced: true };
+    
+    // 3. NOW send it to Google Sheets with the insight included
+    await DataService.syncToCloud(finalResult);
+    
     setCurrentResult(finalResult);
     setResults(prev => [finalResult, ...prev]);
     setIsAiLoading(false);
